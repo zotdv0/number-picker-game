@@ -1,0 +1,29 @@
+{
+  "name": "number-picker-game",
+  "version": "0.0.0",
+  "description": "A simple game inspired by Schulte table",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zotdv0/number-picker-game.git"
+  },
+  "keywords": [],
+  "author": "Denis Zotov",
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/zotdv0/number-picker-game/issues"
+  },
+  "homepage": "https://github.com/zotdv0/number-picker-game#readme",
+  "devDependencies": {
+    "prettier": "^3.8.4",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16"
+  }
+}
