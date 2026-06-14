@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    /* Modern JavaScript & Browser Compatibility: */
+    "target": "ESNext",
+
+    /* Module System Settings: */
+    "module": "ESNext",
+    "rootDir": "src",
+    "outDir": "dist",
+    "sourceMap": true,
+
+    /* Interoperability and File Consistency: */
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Strict Type-Checking: */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "useDefineForClassFields": true,
+
+    // Include modern ECMAScript (ES2022) and DOM APIs for frontend
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
