@@ -19,7 +19,7 @@ export default class Cell {
         return typeof this._value === "undefined";
     }
 
-    public nextValue(): number {
-        return (this.value || 0) + 1;
+    public nextValue(delta: number = 1): number {
+        return (this.value || 0) + delta;
     }
 }
