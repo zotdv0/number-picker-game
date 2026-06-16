@@ -11,9 +11,14 @@ export default class Game {
         return this.board.length;
     }
 
-    fillBoard(random: boolean = true): this {
+    fillBoard(random: boolean = true, filledCells?: number): this {
         let value = 1;
-        for (let i = 0; i < this.boardSize; ++i) {
+        filledCells = (
+            typeof filledCells === "undefined"
+            || filledCells > this.boardSize
+            || filledCells < 0
+        ) ? this.boardSize : filledCells;
+        for (let i = 0; i < filledCells; ++i) {
             let cell = random ? this.board.getRandomEmptyCell() : this.board.getCell(i);
             if (cell) {
                 cell.value = value;
