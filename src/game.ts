@@ -11,10 +11,10 @@ export default class Game {
         return this.board.length;
     }
 
-    fillBoard() {
+    fillBoard(random: boolean = true): this {
         let value = 1;
         for (let i = 0; i < this.boardSize; ++i) {
-            let cell = this.board.getCell(i);
+            let cell = random ? this.board.getRandomEmptyCell() : this.board.getCell(i);
             if (cell) {
                 cell.value = value;
                 value = cell.nextValue();

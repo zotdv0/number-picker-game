@@ -18,4 +18,11 @@ export default class Board {
         return this.cells[index];
     }
 
+    getRandomEmptyCell() {
+        const emptyCells = this.cells.filter(cell => cell.isEmpty());
+        if (!emptyCells) return undefined;
+        const index = Math.floor(Math.random() * emptyCells.length);
+        return emptyCells[index];
+    }
+
 }
