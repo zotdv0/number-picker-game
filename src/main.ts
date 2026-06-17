@@ -1,7 +1,7 @@
 import Game from "./game";
 
 const boardSide = 5;
-const game = new Game(boardSide * boardSide).fillBoard();
+const game = new Game(boardSide * boardSide).fillBoard(false, 5,16);
 
 const createBoard = (boardElement: HTMLElement) => {
     if (boardElement.childElementCount === 0) {
