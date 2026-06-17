@@ -20,9 +20,17 @@ export default class Board {
 
     getRandomEmptyCell() {
         const emptyCells = this.cells.filter(cell => cell.isEmpty());
-        if (!emptyCells) return undefined;
+        if (!emptyCells.length) return undefined;
         const index = Math.floor(Math.random() * emptyCells.length);
         return emptyCells[index];
     }
 
+    findCellAfter(value?: number) {
+        let cells = this.cells.filter(cell =>
+            !cell.isEmpty()
+            && (cell.value as number) >= (value ?? -Infinity)
+        );
+        if (!cells.length) return undefined;
+        return cells.reduce((c1, c2) => (c1.value as number) < (c2.value as number) ? c1 : c2);
+    }
 }
