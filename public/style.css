@@ -11,6 +11,8 @@
     display: grid;
     text-align: center;
     gap: 0.25rem;
+    grid-template-columns: repeat(attr(data-cols number), 1fr);
+    grid-template-rows: repeat(attr(data-rows number), 1fr);
 }
 
 .cell {
