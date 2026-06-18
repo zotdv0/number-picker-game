@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/zotdv0/number-picker-game#readme",
   "devDependencies": {
+    "happy-dom": "^20.10.6",
     "prettier": "^3.8.4",
     "typescript": "^6.0.3",
     "vite": "^8.0.16",
