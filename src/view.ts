@@ -92,6 +92,8 @@ class GameHTMLView implements HTMLView {
         }
         const boardView = new BoardHTMLView(this.game.getBoard());
         const boardElement = boardView.render(document.getElementById(boardView.id));
+        boardElement.dataset.cols = `${this.game.columns}`;
+        boardElement.dataset.rows = `${this.game.rows}`;
         if (!boardElement.parentElement || boardElement.parentElement.id !== this.id) {
             oldValue.appendChild(boardElement);
         }
