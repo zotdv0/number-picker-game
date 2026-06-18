@@ -35,6 +35,10 @@ export default class Game {
         return this;
     }
 
+    getBoard(): Board {
+        return this.board;
+    }
+
     getCell(index: number) {
         return this.board.getCell(index);
     }
