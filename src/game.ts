@@ -8,13 +8,23 @@ const getDelta = (randomDelta: number): number => (
 
 export default class Game {
     protected board: Board;
+    protected cols: number;
 
-    constructor(size: number) {
-        this.board = new Board(size);
+    constructor(size: number, columns?: number) {
+        this.cols = columns && columns > 0 ? columns : 1;
+        this.board = new Board(size * this.cols);
     }
 
     get boardSize(): number {
         return this.board.length;
+    }
+
+    get columns(): number {
+        return this.cols;
+    }
+
+    get rows(): number {
+        return Math.ceil(this.boardSize / this.columns);
     }
 
     fillBoard(randomOrder: boolean = true, randomDelta: number = 0, filledCells?: number): this {
