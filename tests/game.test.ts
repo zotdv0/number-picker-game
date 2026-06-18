@@ -36,6 +36,14 @@ describe('Game', () => {
             expect(cellValue).toBeGreaterThan(value);
             value = cellValue;
         }
-    })
+    });
+
+    test('checks rows and columns', () => {
+        const cols = 4, rows = 5;
+        const game = new Game(rows, cols);
+        expect(game.columns).toBe(cols);
+        expect(game.rows).toBe(rows);
+        expect(game.boardSize).toBe(cols * rows);
+    });
 
 });
