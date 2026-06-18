@@ -5,6 +5,7 @@ import Cell from "../src/cell";
 import {BoardHTMLView, CellHTMLView, GameHTMLView} from "../src/view";
 import Board from "../src/board";
 import Game from "../src/game";
+import {HTMLElement} from "happy-dom";
 
 describe('CellHTMLView', () => {
 
@@ -72,15 +73,18 @@ describe('BoardHTMLView', () => {
 describe('GameHTMLView', () => {
 
     test('checks attributes', () => {
-        const game = new Game(5);
+        const game = new Game(5, 3);
         const gameElement = new GameHTMLView(game).render();
         expect(gameElement.id).toBe('game');
     });
 
     test('checks elements', () => {
-        const game = new Game(5);
+        const game = new Game(5, 3);
         const gameElement = new GameHTMLView(game).render();
-        expect(gameElement.querySelector('#board')).toBeInstanceOf(HTMLElement);
+        const boardElement = gameElement.querySelector('#board') as HTMLElement | null;
+        expect(boardElement).toBeInstanceOf(HTMLElement);
+        expect(boardElement?.dataset.cols).toBe('3');
+        expect(boardElement?.dataset.rows).toBe('5');
     });
 
 });
