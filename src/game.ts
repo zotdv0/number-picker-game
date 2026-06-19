@@ -10,10 +10,12 @@ const getDelta = (randomDelta: number): number => (
 export default class Game {
     protected board: Board;
     protected cols: number;
+    protected lastValue: number;
 
     constructor(size: number, columns?: number) {
         this.cols = columns && columns > 0 ? columns : 1;
         this.board = new Board(size * this.cols);
+        this.lastValue = 0;
     }
 
     static fromParams(params: Params): Game {
@@ -63,5 +65,14 @@ export default class Game {
 
     getCell(index: number) {
         return this.board.getCell(index);
+    }
+
+    getCellWithNextValue() {
+        return this.board.findCellAfter(this.lastValue);
+    }
+
+    setLastValue(value: number): this {
+        this.lastValue = value;
+        return this;
     }
 }
