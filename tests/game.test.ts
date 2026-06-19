@@ -1,5 +1,6 @@
 import {describe, expect, test} from "vitest";
 import Game from "../src/game";
+import Params from "../src/params";
 
 describe('Game', () => {
 
@@ -44,6 +45,21 @@ describe('Game', () => {
         expect(game.columns).toBe(cols);
         expect(game.rows).toBe(rows);
         expect(game.boardSize).toBe(cols * rows);
+    });
+
+    test('creates new game from params', () => {
+        const params = new Params();
+        params.boardRows = 3;
+        params.boardCols = 4;
+        params.filledCells = 5;
+        const game = Game.fromParams(params);
+        expect(game.rows).toBe(3);
+        expect(game.columns).toBe(4);
+        const cells = Array.from(
+            {length: game.boardSize},
+            (_, i) => game.getCell(i)
+        ).filter((c) => c && !c.isEmpty());
+        expect(cells).toHaveLength(params.filledCells);
     });
 
 });
