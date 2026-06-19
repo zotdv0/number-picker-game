@@ -1,8 +1,11 @@
 import Game from "./game";
 import {GameHTMLView} from "./view.ts";
+import Params from "./params.ts";
 
-const rows = 5, cols = 5;
-const game = new Game(rows, cols).fillBoard(false, 5,16);
+const params = new Params();
+params.randomOrder = false;
+params.filledCells = 16;
+const game = Game.fromParams(params);
 
 document.addEventListener('DOMContentLoaded', () => {
     let gameElement = document.getElementById('game');

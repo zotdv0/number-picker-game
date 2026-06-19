@@ -1,4 +1,5 @@
 import Board from "./board";
+import type Params from "./params.ts";
 
 const getDelta = (randomDelta: number): number => (
     (randomDelta > 0)
@@ -13,6 +14,17 @@ export default class Game {
     constructor(size: number, columns?: number) {
         this.cols = columns && columns > 0 ? columns : 1;
         this.board = new Board(size * this.cols);
+    }
+
+    static fromParams(params: Params): Game {
+        return new Game(
+            params.boardRows,
+            params.boardCols,
+        ).fillBoard(
+            params.randomOrder,
+            params.randomDelta,
+            params.filledCells,
+        );
     }
 
     get boardSize(): number {
