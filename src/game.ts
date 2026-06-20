@@ -68,7 +68,7 @@ export default class Game {
     }
 
     getCellWithNextValue() {
-        return this.board.findCellAfter(this.lastValue);
+        return this.board.findCellAfter(this.lastValue + 1);
     }
 
     setLastValue(value: number): this {
