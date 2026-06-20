@@ -75,4 +75,14 @@ export default class Game {
         this.lastValue = value;
         return this;
     }
+
+    playerPickCell(index: number) {
+        const nextCell = this.getCellWithNextValue();
+        const thisCell = this.getCell(index);
+        if (nextCell && thisCell && thisCell.value && thisCell.value === nextCell.value) {
+            this.setLastValue(thisCell.value);
+            return true;
+        }
+        return false;
+    }
 }
