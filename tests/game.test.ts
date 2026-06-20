@@ -81,3 +81,37 @@ describe('Game', () => {
     })
 
 });
+
+describe('Game actions',() => {
+
+    test('player picks correct cell', () => {
+        const game = new Game(5).fillBoard(false, 0, 2);
+        const result = game.playerPickCell(0);
+        expect(result).toBeTruthy();
+        expect(game.getCellWithNextValue()!.value).toBe(2);
+    });
+
+    test('player picks wrong cell', () => {
+        const game = new Game(5).fillBoard(false, 0, 2);
+        const result = game.playerPickCell(1);
+        expect(result).toBeFalsy();
+        expect(game.getCellWithNextValue()!.value).toBe(1);
+    });
+
+    test('player picks empty cell', () => {
+        const game = new Game(5).fillBoard(false, 0, 2);
+        const result = game.playerPickCell(3);
+        expect(result).toBeFalsy();
+        expect(game.getCellWithNextValue()!.value).toBe(1);
+    });
+
+    test('player picks last cell', () => {
+        const game = new Game(5).fillBoard(false, 0, 2);
+        let result = game.playerPickCell(0);
+        expect(result).toBeTruthy();
+        result = game.playerPickCell(1);
+        expect(result).toBeTruthy();
+        expect(game.getCellWithNextValue()).toBeUndefined();
+    });
+
+});
