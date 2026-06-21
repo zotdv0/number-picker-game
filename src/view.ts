@@ -72,6 +72,30 @@ class BoardHTMLView implements HTMLView {
     }
 }
 
+class NextCellHTMLView implements HTMLView {
+    protected cell: Cell;
+
+    constructor(cell: Cell) {
+        this.cell = cell;
+    }
+
+    get id(): string {
+        return 'next_cell';
+    }
+
+    render(oldValue?: HTMLElement | nullOrUndefined) {
+        oldValue = oldValue || document.getElementById(this.id);
+        if (!oldValue) {
+            oldValue = document.createElement("div");
+            oldValue.className = "next-cell";
+            oldValue.id = this.id;
+        }
+        oldValue.dataset.nextValue = `${this.cell?.value ?? ''}`;
+        oldValue.innerText = `${this.cell?.value ?? ''}`;
+        return oldValue;
+    }
+}
+
 class GameHTMLView implements HTMLView {
     protected game: Game;
 
@@ -81,6 +105,14 @@ class GameHTMLView implements HTMLView {
 
     get id(): string {
         return 'game';
+    }
+
+    renderNextCell() {
+        const nextCell = this.game.getCellWithNextValue();
+        if (nextCell) {
+            const nextView = new NextCellHTMLView(nextCell);
+            return nextView.render(document.getElementById(nextView.id));
+        }
     }
 
     render(oldValue?: HTMLElement | nullOrUndefined) {
@@ -97,15 +129,20 @@ class GameHTMLView implements HTMLView {
         if (!boardElement.parentElement || boardElement.parentElement.id !== this.id) {
             oldValue.appendChild(boardElement);
         }
+        const nextElement = this.renderNextCell();
+        if (nextElement) {
+            oldValue.appendChild(nextElement);
+        }
         for (const cellElement of boardElement.querySelectorAll('.cell')) {
             cellElement.addEventListener('click', (evt) => {
                 const target = evt.target as HTMLDivElement;
                 const index = +(target.dataset.index as string);
                 this.game.playerPickCell(index);
+                this.renderNextCell();
             });
         }
         return oldValue;
     }
 }
 
-export { CellHTMLView, BoardHTMLView, GameHTMLView };
+export { CellHTMLView, BoardHTMLView, NextCellHTMLView, GameHTMLView };
