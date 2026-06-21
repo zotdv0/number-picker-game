@@ -97,6 +97,13 @@ class GameHTMLView implements HTMLView {
         if (!boardElement.parentElement || boardElement.parentElement.id !== this.id) {
             oldValue.appendChild(boardElement);
         }
+        for (const cellElement of boardElement.querySelectorAll('.cell')) {
+            cellElement.addEventListener('click', (evt) => {
+                const target = evt.target as HTMLDivElement;
+                const index = +(target.dataset.index as string);
+                this.game.playerPickCell(index);
+            });
+        }
         return oldValue;
     }
 }
