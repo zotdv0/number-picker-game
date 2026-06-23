@@ -79,7 +79,7 @@ export default class Game {
     }
 
     getCellWithNextValue() {
-        return this.board.findCellAfter(this.lastValue + 1);
+        return this.board.findCellAfter(this.lastValue + getDelta(0));
     }
 
     setLastValue(value: number): this {
