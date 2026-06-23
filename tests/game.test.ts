@@ -67,22 +67,24 @@ describe('Game', () => {
         const nextCell = game.getCellWithNextValue();
         expect(nextCell!.value).toBe(1);
     });
+
     test('gets second value', () => {
         const game = new Game(5).fillBoard(false, 0, 2);
         game.setLastValue(1);
         const nextCell = game.getCellWithNextValue();
         expect(nextCell!.value).toBe(2);
     });
+
     test('gets last value', () => {
         const game = new Game(5).fillBoard(false, 0, 2);
         game.setLastValue(2);
         const nextCell = game.getCellWithNextValue();
         expect(nextCell).toBeUndefined();
-    })
+    });
 
 });
 
-describe('Game actions',() => {
+describe('Game actions', () => {
 
     test('player picks correct cell', () => {
         const game = new Game(5).fillBoard(false, 0, 2);
