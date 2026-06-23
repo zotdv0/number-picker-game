@@ -96,6 +96,30 @@ class NextCellHTMLView implements HTMLView {
     }
 }
 
+class StatusHTMLView implements HTMLView {
+    protected isOver: boolean;
+
+    constructor(isOver: boolean) {
+        this.isOver = isOver;
+    }
+
+    get id(): string {
+        return 'status';
+    }
+
+    render(oldValue?: HTMLElement | nullOrUndefined) {
+        oldValue = oldValue || document.getElementById(this.id);
+        if (!oldValue) {
+            oldValue = document.createElement("div");
+            oldValue.className = "status";
+            oldValue.id = this.id;
+        }
+        oldValue.dataset.isOver = this.isOver ? '1' : '0';
+        oldValue.innerText = this.isOver ? 'Game over' : '';
+        return oldValue;
+    }
+}
+
 class GameHTMLView implements HTMLView {
     protected game: Game;
 
@@ -113,6 +137,12 @@ class GameHTMLView implements HTMLView {
             const nextView = new NextCellHTMLView(nextCell);
             return nextView.render(document.getElementById(nextView.id));
         }
+    }
+
+    renderStatus() {
+        const isOver = this.game.isOver();
+        const statusView = new StatusHTMLView(isOver);
+        return statusView.render(document.getElementById(statusView.id));
     }
 
     render(oldValue?: HTMLElement | nullOrUndefined) {
@@ -133,16 +163,21 @@ class GameHTMLView implements HTMLView {
         if (nextElement) {
             oldValue.appendChild(nextElement);
         }
+        const statusElement = this.renderStatus();
+        if (statusElement) {
+            oldValue.appendChild(statusElement);
+        }
         for (const cellElement of boardElement.querySelectorAll('.cell')) {
             cellElement.addEventListener('click', (evt) => {
                 const target = evt.target as HTMLDivElement;
                 const index = +(target.dataset.index as string);
                 this.game.playerPickCell(index);
                 this.renderNextCell();
+                this.renderStatus();
             });
         }
         return oldValue;
     }
 }
 
-export { CellHTMLView, BoardHTMLView, NextCellHTMLView, GameHTMLView };
+export { CellHTMLView, BoardHTMLView, NextCellHTMLView, StatusHTMLView, GameHTMLView };
