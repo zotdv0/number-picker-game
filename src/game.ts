@@ -90,6 +90,7 @@ export default class Game {
     playerPickCell(index: number) {
         const nextCell = this.getCellWithNextValue();
         if (!nextCell) this.setFinish();
+        if (this.over) return false;
         const thisCell = this.getCell(index);
         let success = false;
         if (nextCell && thisCell && thisCell.value && thisCell.value === nextCell.value) {
