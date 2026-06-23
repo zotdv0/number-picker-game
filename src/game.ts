@@ -11,11 +11,13 @@ export default class Game {
     protected board: Board;
     protected cols: number;
     protected lastValue: number;
+    protected over: boolean;
 
     constructor(size: number, columns?: number) {
         this.cols = columns && columns > 0 ? columns : 1;
         this.board = new Board(size * this.cols);
         this.lastValue = 0;
+        this.over = false;
     }
 
     static fromParams(params: Params): Game {
@@ -39,6 +41,15 @@ export default class Game {
 
     get rows(): number {
         return Math.ceil(this.boardSize / this.columns);
+    }
+
+    isOver(): boolean {
+        return this.over;
+    }
+
+    setFinish(): this {
+        this.over = true;
+        return this;
     }
 
     fillBoard(randomOrder: boolean = true, randomDelta: number = 0, filledCells?: number): this {
@@ -78,11 +89,14 @@ export default class Game {
 
     playerPickCell(index: number) {
         const nextCell = this.getCellWithNextValue();
+        if (!nextCell) this.setFinish();
         const thisCell = this.getCell(index);
+        let success = false;
         if (nextCell && thisCell && thisCell.value && thisCell.value === nextCell.value) {
+            success = true;
             this.setLastValue(thisCell.value);
-            return true;
+            if (this.getCellWithNextValue() === undefined) this.setFinish();
         }
-        return false;
+        return success;
     }
 }
