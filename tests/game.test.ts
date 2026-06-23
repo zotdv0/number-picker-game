@@ -82,6 +82,16 @@ describe('Game', () => {
         expect(nextCell).toBeUndefined();
     });
 
+    test('checks game over', () => {
+        const game = new Game(5);
+        expect(game.isOver()).toBeFalsy();
+    });
+
+    test('sets game over', () => {
+        const game = new Game(5).setFinish();
+        expect(game.isOver()).toBeTruthy();
+    });
+
 });
 
 describe('Game actions', () => {
@@ -111,9 +121,11 @@ describe('Game actions', () => {
         const game = new Game(5).fillBoard(false, 0, 2);
         let result = game.playerPickCell(0);
         expect(result).toBeTruthy();
+        expect(game.isOver()).toBeFalsy();
         result = game.playerPickCell(1);
         expect(result).toBeTruthy();
         expect(game.getCellWithNextValue()).toBeUndefined();
+        expect(game.isOver()).toBeTruthy();
     });
 
 });
