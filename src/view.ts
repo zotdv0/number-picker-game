@@ -97,9 +97,11 @@ class NextCellHTMLView implements HTMLView {
 }
 
 class StatusHTMLView implements HTMLView {
+    protected isStarted: boolean;
     protected isOver: boolean;
 
-    constructor(isOver: boolean) {
+    constructor(isStarted: boolean, isOver: boolean) {
+        this.isStarted = isStarted;
         this.isOver = isOver;
     }
 
@@ -116,6 +118,7 @@ class StatusHTMLView implements HTMLView {
         }
         const gameElement = GameHTMLView.getElement();
         if (gameElement) {
+            gameElement.dataset.isStarted = this.isStarted ? '1' : '0';
             gameElement.dataset.isOver = this.isOver ? '1' : '0';
         }
         oldValue.innerText = this.isOver ? 'Game over' : '';
@@ -147,7 +150,7 @@ class GameHTMLView implements HTMLView {
     }
 
     renderStatus() {
-        const statusView = new StatusHTMLView(this.game.isOver());
+        const statusView = new StatusHTMLView(this.game.isStarted(), this.game.isOver());
         return statusView.render(document.getElementById(statusView.id));
     }
 
