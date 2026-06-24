@@ -12,12 +12,14 @@ export default class Game {
     protected cols: number;
     protected lastValue: number;
     protected over: boolean;
+    protected started: boolean;
 
     constructor(size: number, columns?: number) {
         this.cols = columns && columns > 0 ? columns : 1;
         this.board = new Board(size * this.cols);
         this.lastValue = 0;
         this.over = false;
+        this.started = false;
     }
 
     static fromParams(params: Params): Game {
@@ -49,6 +51,15 @@ export default class Game {
 
     setFinish(): this {
         this.over = true;
+        return this;
+    }
+
+    isStarted(): boolean {
+        return this.started;
+    }
+
+    setStarted(): this {
+        this.started = true;
         return this;
     }
 
@@ -88,6 +99,7 @@ export default class Game {
     }
 
     playerPickCell(index: number) {
+        this.setStarted();
         const nextCell = this.getCellWithNextValue();
         if (!nextCell) this.setFinish();
         if (this.over) return false;
