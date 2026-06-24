@@ -1,6 +1,6 @@
 import type Cell from "./cell.ts";
 import type Board from "./board.ts";
-import type Game from "./game.ts";
+import Game from "./game.ts";
 
 type nullOrUndefined = undefined | null;
 
@@ -140,9 +140,23 @@ class GameHTMLView implements HTMLView {
     }
 
     renderStatus() {
-        const isOver = this.game.isOver();
-        const statusView = new StatusHTMLView(isOver);
+        const statusView = new StatusHTMLView(this.game.isOver());
         return statusView.render(document.getElementById(statusView.id));
+    }
+
+    renderNewGameButton(btn?: HTMLButtonElement | null): HTMLButtonElement {
+        if (!btn) {
+            btn = document.createElement("button");
+            btn.className = "button button-new-game";
+            btn.addEventListener("click", () => {
+                const params = this.game.getParams();
+                this.game = Game.fromParams(params).setStarted();
+                this.render();
+                return false;
+            });
+        }
+        btn.innerText = this.game.isStarted() && !this.game.isOver() ? "Restart game" : "New game";
+        return btn;
     }
 
     render(oldValue?: HTMLElement | nullOrUndefined) {
@@ -152,6 +166,8 @@ class GameHTMLView implements HTMLView {
             oldValue.className = "game";
             oldValue.id = this.id;
         }
+        oldValue.dataset.isStarted = this.game.isStarted() ? '1' : '0';
+        oldValue.dataset.isOver = this.game.isOver() ? '1' : '0';
         const boardView = new BoardHTMLView(this.game.getBoard());
         const boardElement = boardView.render(document.getElementById(boardView.id));
         boardElement.dataset.cols = `${this.game.columns}`;
@@ -166,6 +182,11 @@ class GameHTMLView implements HTMLView {
         const statusElement = this.renderStatus();
         if (statusElement) {
             oldValue.appendChild(statusElement);
+        }
+        let buttonNewGame = oldValue.querySelector('.button-new-game') as HTMLButtonElement | null;
+        if (!buttonNewGame) {
+            buttonNewGame = this.renderNewGameButton(buttonNewGame);
+            oldValue.appendChild(buttonNewGame);
         }
         for (const cellElement of boardElement.querySelectorAll('.cell')) {
             cellElement.addEventListener('click', (evt) => {
