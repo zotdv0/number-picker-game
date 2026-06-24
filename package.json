@@ -1,6 +1,6 @@
 {
   "name": "number-picker-game",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A simple game inspired by Schulte table",
   "private": true,
   "scripts": {
