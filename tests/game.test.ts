@@ -62,6 +62,17 @@ describe('Game', () => {
         expect(cells).toHaveLength(params.filledCells);
     });
 
+    test('gets params from game', () => {
+        const params = new Params();
+        params.boardRows = 1;
+        params.boardCols = 2;
+        params.boardRows = 3;
+        params.boardCols = 4;
+        params.filledCells = 5;
+        const game = Game.fromParams(params);
+        expect(game.getParams()).toStrictEqual(params);
+    });
+
     test('gets first value', () => {
         const game = new Game(5).fillBoard(false, 0, 2);
         const nextCell = game.getCellWithNextValue();
