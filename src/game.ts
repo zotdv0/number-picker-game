@@ -1,5 +1,5 @@
 import Board from "./board";
-import type Params from "./params.ts";
+import Params from "./params.ts";
 
 const getDelta = (randomDelta: number): number => (
     (randomDelta > 0)
@@ -13,6 +13,9 @@ export default class Game {
     protected lastValue: number;
     protected over: boolean;
     protected started: boolean;
+    protected paramRandomOrder: boolean;
+    protected paramRandomDelta: number;
+    protected paramFilledCells: number;
 
     constructor(size: number, columns?: number) {
         this.cols = columns && columns > 0 ? columns : 1;
@@ -20,6 +23,9 @@ export default class Game {
         this.lastValue = 0;
         this.over = false;
         this.started = false;
+        this.paramRandomOrder = true;
+        this.paramRandomDelta = 0;
+        this.paramFilledCells = this.boardSize;
     }
 
     static fromParams(params: Params): Game {
@@ -31,6 +37,16 @@ export default class Game {
             params.randomDelta,
             params.filledCells,
         );
+    }
+
+    getParams(): Params {
+        const p = new Params();
+        p.boardRows = this.rows;
+        p.boardCols = this.cols;
+        p.randomOrder = this.paramRandomOrder;
+        p.randomDelta = this.paramRandomDelta;
+        p.filledCells = this.paramFilledCells;
+        return p;
     }
 
     get boardSize(): number {
@@ -70,6 +86,9 @@ export default class Game {
             || filledCells > this.boardSize
             || filledCells < 0
         ) ? this.boardSize : filledCells;
+        this.paramRandomOrder = randomOrder;
+        this.paramRandomDelta = randomDelta;
+        this.paramFilledCells = filledCells;
         for (let i = 0; i < filledCells; ++i) {
             let cell = randomOrder ? this.board.getRandomEmptyCell() : this.board.getCell(i);
             if (cell) {
