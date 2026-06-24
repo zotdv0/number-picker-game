@@ -1,6 +1,6 @@
 import type Cell from "./cell.ts";
 import type Board from "./board.ts";
-import type Game from "./game.ts";
+import Game from "./game.ts";
 
 type nullOrUndefined = undefined | null;
 
@@ -96,6 +96,36 @@ class NextCellHTMLView implements HTMLView {
     }
 }
 
+class StatusHTMLView implements HTMLView {
+    protected isStarted: boolean;
+    protected isOver: boolean;
+
+    constructor(isStarted: boolean, isOver: boolean) {
+        this.isStarted = isStarted;
+        this.isOver = isOver;
+    }
+
+    get id(): string {
+        return 'status';
+    }
+
+    render(oldValue?: HTMLElement | nullOrUndefined) {
+        oldValue = oldValue || document.getElementById(this.id);
+        if (!oldValue) {
+            oldValue = document.createElement("div");
+            oldValue.className = "status";
+            oldValue.id = this.id;
+        }
+        const gameElement = GameHTMLView.getElement();
+        if (gameElement) {
+            gameElement.dataset.isStarted = this.isStarted ? '1' : '0';
+            gameElement.dataset.isOver = this.isOver ? '1' : '0';
+        }
+        oldValue.innerText = this.isOver ? 'Game over' : '';
+        return oldValue;
+    }
+}
+
 class GameHTMLView implements HTMLView {
     protected game: Game;
 
@@ -107,12 +137,36 @@ class GameHTMLView implements HTMLView {
         return 'game';
     }
 
+    static getElement(): HTMLDivElement | null {
+        return document.querySelector('#game');
+    }
+
     renderNextCell() {
         const nextCell = this.game.getCellWithNextValue();
         if (nextCell) {
             const nextView = new NextCellHTMLView(nextCell);
             return nextView.render(document.getElementById(nextView.id));
         }
+    }
+
+    renderStatus() {
+        const statusView = new StatusHTMLView(this.game.isStarted(), this.game.isOver());
+        return statusView.render(document.getElementById(statusView.id));
+    }
+
+    renderNewGameButton(btn?: HTMLButtonElement | null): HTMLButtonElement {
+        if (!btn) {
+            btn = document.createElement("button");
+            btn.className = "button button-new-game";
+            btn.addEventListener("click", () => {
+                const params = this.game.getParams();
+                this.game = Game.fromParams(params).setStarted();
+                this.render();
+                return false;
+            });
+        }
+        btn.innerText = this.game.isStarted() && !this.game.isOver() ? "Restart game" : "New game";
+        return btn;
     }
 
     render(oldValue?: HTMLElement | nullOrUndefined) {
@@ -122,6 +176,8 @@ class GameHTMLView implements HTMLView {
             oldValue.className = "game";
             oldValue.id = this.id;
         }
+        oldValue.dataset.isStarted = this.game.isStarted() ? '1' : '0';
+        oldValue.dataset.isOver = this.game.isOver() ? '1' : '0';
         const boardView = new BoardHTMLView(this.game.getBoard());
         const boardElement = boardView.render(document.getElementById(boardView.id));
         boardElement.dataset.cols = `${this.game.columns}`;
@@ -133,16 +189,29 @@ class GameHTMLView implements HTMLView {
         if (nextElement) {
             oldValue.appendChild(nextElement);
         }
+        const statusElement = this.renderStatus();
+        if (statusElement) {
+            oldValue.appendChild(statusElement);
+        }
+        let buttonNewGame = oldValue.querySelector('.button-new-game') as HTMLButtonElement | null;
+        if (!buttonNewGame) {
+            buttonNewGame = this.renderNewGameButton(buttonNewGame);
+        } else {
+            oldValue.removeChild(buttonNewGame);
+        }
+        oldValue.appendChild(buttonNewGame);
         for (const cellElement of boardElement.querySelectorAll('.cell')) {
             cellElement.addEventListener('click', (evt) => {
                 const target = evt.target as HTMLDivElement;
                 const index = +(target.dataset.index as string);
                 this.game.playerPickCell(index);
                 this.renderNextCell();
+                this.renderStatus();
+                this.renderNewGameButton(buttonNewGame);
             });
         }
         return oldValue;
     }
 }
 
-export { CellHTMLView, BoardHTMLView, NextCellHTMLView, GameHTMLView };
+export { CellHTMLView, BoardHTMLView, NextCellHTMLView, StatusHTMLView, GameHTMLView };

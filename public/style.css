@@ -1,3 +1,10 @@
+:root {
+    --active-color: oklch(3% 28% 270deg);
+    --active-background: contrast-color(var(--active-color));
+    --inactive-color: oklch(65% 5% 270deg);
+    --inactive-background: oklch(80% 5% 270deg);
+}
+
 *, *:before, *:after {
     box-sizing: border-box;
 }
@@ -16,5 +23,21 @@
 }
 
 .cell {
-    border: 1px solid black;
+    border: 1px solid;
+    color: var(--active-color);
+    background-color: var(--active-background);
+}
+
+#game[data-is-started="0"] .cell {
+    color: var(--inactive-background);
+    background-color: var(--inactive-background);
+}
+
+#game[data-is-over="1"] .cell {
+    color: var(--inactive-color);
+    background-color: var(--inactive-background);
+}
+
+#game[data-is-started="0"] #next_cell {
+    visibility: hidden;
 }

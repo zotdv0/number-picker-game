@@ -62,56 +62,96 @@ describe('Game', () => {
         expect(cells).toHaveLength(params.filledCells);
     });
 
+    test('gets params from game', () => {
+        const params = new Params();
+        params.boardRows = 1;
+        params.boardCols = 2;
+        params.boardRows = 3;
+        params.boardCols = 4;
+        params.filledCells = 5;
+        const game = Game.fromParams(params);
+        expect(game.getParams()).toStrictEqual(params);
+    });
+
     test('gets first value', () => {
         const game = new Game(5).fillBoard(false, 0, 2);
         const nextCell = game.getCellWithNextValue();
         expect(nextCell!.value).toBe(1);
     });
+
     test('gets second value', () => {
         const game = new Game(5).fillBoard(false, 0, 2);
         game.setLastValue(1);
         const nextCell = game.getCellWithNextValue();
         expect(nextCell!.value).toBe(2);
     });
+
     test('gets last value', () => {
         const game = new Game(5).fillBoard(false, 0, 2);
         game.setLastValue(2);
         const nextCell = game.getCellWithNextValue();
         expect(nextCell).toBeUndefined();
-    })
+    });
+
+    test('checks game over', () => {
+        const game = new Game(5);
+        expect(game.isOver()).toBeFalsy();
+    });
+
+    test('sets game over', () => {
+        const game = new Game(5).setFinish();
+        expect(game.isOver()).toBeTruthy();
+    });
+
+    test('starts game', () => {
+        const game = new Game(5);
+        expect(game.isStarted()).toBeFalsy();
+        game.setStarted();
+        expect(game.isStarted()).toBeTruthy();
+    });
+
+    test('ends game', () => {
+        const game = new Game(5);
+        game.setStarted();
+        game.setFinish();
+        expect(game.isOver()).toBeTruthy();
+        expect(game.isStarted()).toBeFalsy();
+    });
 
 });
 
-describe('Game actions',() => {
+describe('Game actions', () => {
 
     test('player picks correct cell', () => {
-        const game = new Game(5).fillBoard(false, 0, 2);
+        const game = new Game(5).fillBoard(false, 0, 2).setStarted();
         const result = game.playerPickCell(0);
         expect(result).toBeTruthy();
         expect(game.getCellWithNextValue()!.value).toBe(2);
     });
 
     test('player picks wrong cell', () => {
-        const game = new Game(5).fillBoard(false, 0, 2);
+        const game = new Game(5).fillBoard(false, 0, 2).setStarted();
         const result = game.playerPickCell(1);
         expect(result).toBeFalsy();
         expect(game.getCellWithNextValue()!.value).toBe(1);
     });
 
     test('player picks empty cell', () => {
-        const game = new Game(5).fillBoard(false, 0, 2);
+        const game = new Game(5).fillBoard(false, 0, 2).setStarted();
         const result = game.playerPickCell(3);
         expect(result).toBeFalsy();
         expect(game.getCellWithNextValue()!.value).toBe(1);
     });
 
     test('player picks last cell', () => {
-        const game = new Game(5).fillBoard(false, 0, 2);
+        const game = new Game(5).fillBoard(false, 0, 2).setStarted();
         let result = game.playerPickCell(0);
         expect(result).toBeTruthy();
+        expect(game.isOver()).toBeFalsy();
         result = game.playerPickCell(1);
         expect(result).toBeTruthy();
         expect(game.getCellWithNextValue()).toBeUndefined();
+        expect(game.isOver()).toBeTruthy();
     });
 
 });
