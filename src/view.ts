@@ -114,7 +114,10 @@ class StatusHTMLView implements HTMLView {
             oldValue.className = "status";
             oldValue.id = this.id;
         }
-        oldValue.dataset.isOver = this.isOver ? '1' : '0';
+        const gameElement = GameHTMLView.getElement();
+        if (gameElement) {
+            gameElement.dataset.isOver = this.isOver ? '1' : '0';
+        }
         oldValue.innerText = this.isOver ? 'Game over' : '';
         return oldValue;
     }
@@ -129,6 +132,10 @@ class GameHTMLView implements HTMLView {
 
     get id(): string {
         return 'game';
+    }
+
+    static getElement(): HTMLDivElement | null {
+        return document.querySelector('#game');
     }
 
     renderNextCell() {
