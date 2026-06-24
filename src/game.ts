@@ -67,6 +67,7 @@ export default class Game {
 
     setFinish(): this {
         this.over = true;
+        this.started = false;
         return this;
     }
 
