@@ -118,7 +118,7 @@ export default class Game {
     }
 
     playerPickCell(index: number) {
-        this.setStarted();
+        if (!this.isStarted()) return false;
         const nextCell = this.getCellWithNextValue();
         if (!nextCell) this.setFinish();
         if (this.over) return false;
