@@ -202,6 +202,7 @@ class GameHTMLView implements HTMLView {
                 this.game.playerPickCell(index);
                 this.renderNextCell();
                 this.renderStatus();
+                this.renderNewGameButton(buttonNewGame);
             });
         }
         return oldValue;
