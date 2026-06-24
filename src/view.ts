@@ -193,8 +193,10 @@ class GameHTMLView implements HTMLView {
         let buttonNewGame = oldValue.querySelector('.button-new-game') as HTMLButtonElement | null;
         if (!buttonNewGame) {
             buttonNewGame = this.renderNewGameButton(buttonNewGame);
-            oldValue.appendChild(buttonNewGame);
+        } else {
+            oldValue.removeChild(buttonNewGame);
         }
+        oldValue.appendChild(buttonNewGame);
         for (const cellElement of boardElement.querySelectorAll('.cell')) {
             cellElement.addEventListener('click', (evt) => {
                 const target = evt.target as HTMLDivElement;
